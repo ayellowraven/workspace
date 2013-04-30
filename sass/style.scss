@@ -24,6 +24,8 @@
 // Fallback for older browsers (mostly IE)
 @import "partials/fallback";
 
+@import "partials/shame";
+
 // Helpers classes should come second-to-last
 @include h5bp-helpers;
 
