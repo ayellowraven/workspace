@@ -6,7 +6,7 @@
 <xsl:import href="typography.xsl"/>
 <xsl:import href="search.xsl"/>
 
-<xsl:output method="xml" doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" omit-xml-declaration="yes" encoding="UTF-8" indent="yes"/>
+<xsl:output doctype-system="about:legacy-compat" method="html" />
 	
 <xsl:template match="/">
 	<xsl:comment><![CDATA[[if IE 6]><html lang="en" class="no-js ie6 lte-ie9 lte-ie8 lte-ie7 lte-ie6 gte-ie6 wf-inactive"><![endif]]]></xsl:comment>
