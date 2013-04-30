@@ -1,0 +1,41 @@
+body.night {
+	background: $dark-blue;
+	color: $white;
+	
+	@include transition($background-transition);
+
+	h1, h2, h3 {
+		color: $white;
+		opacity: .75;
+	}
+	
+	a {
+		color: $light-gray;
+		
+		&:hover, &:focus {
+			color: $light-blue;
+		}
+	}
+
+	nav#toc {
+    	a.bookmark { color: $red; }
+    	mark a { color: $light-blue; }
+    }
+	
+	&.quiet {
+
+		nav#toc {
+			a:hover, a:focus { color: $white; }
+		}	
+	}
+
+	&.explore {
+
+	}
+	
+	svg {
+		text { 
+			fill: $white;
+		}
+	}
+}
