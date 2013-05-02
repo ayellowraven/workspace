@@ -5,9 +5,10 @@
 <xsl:import href="page-title.xsl"/>
 <xsl:import href="typography.xsl"/>
 <xsl:import href="search.xsl"/>
+<xsl:import href="bookmarks.xsl"/>
 
+<!-- Outputs HTML5 -->
 <xsl:output doctype-system="about:legacy-compat" method="html" />
-	
 <xsl:template match="/">
 	<xsl:comment><![CDATA[[if IE 6]><html lang="en" class="no-js ie6 lte-ie9 lte-ie8 lte-ie7 lte-ie6 gte-ie6 wf-inactive"><![endif]]]></xsl:comment>
 	<xsl:comment><![CDATA[[if IE 7]><html lang="en" class="no-js ie7 lte-ie9 lte-ie8 lte-ie7 gte-ie7 gte-ie6 wf-inactive"><![endif]]]></xsl:comment>
@@ -48,6 +49,7 @@
 	
 	<!-- More ideas for your <head> here: h5bp.com/d/head-Tips -->
 
+	<!-- Including typography-related scripts here to deal with flash of unstyled text -->
 	<script src="{$workspace}/js/modernizr-2.5.2.min.js"></script>
 	<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	<script src="http://cdnjs.cloudflare.com/ajax/libs/d3/3.0.8/d3.min.js"></script>
@@ -75,6 +77,7 @@
     </script>
 </head>
 <body>
+	<!-- Setting page-unique body IDs to ease styling -->
 	<xsl:attribute name="id">
 		<xsl:choose>
 			<xsl:when test="//params/ds-current-chapter/item">
@@ -90,14 +93,17 @@
 		<xsl:text>_page</xsl:text>
 	</xsl:attribute>
 	<xsl:attribute name="class">
+	<!-- Setting reading mode -->
 		<xsl:choose>
-			<xsl:when test="$eohc-reading-mode = 'explore'">
+			<xsl:when test="//*[substring(name(), string-length(name()) - 8) = '-bookmark'] = 'explore'">
 				<xsl:text>explore</xsl:text>
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:text>quiet</xsl:text>
 			</xsl:otherwise>
 		</xsl:choose>
+		
+	<!-- Setting day/night/auto: defaults to auto unless UA cookie set otherwise -->
 		<xsl:choose>
 		<!-- Day -->
 			<xsl:when test="$night = 'no'">
@@ -120,6 +126,7 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:attribute>
+
 	<!-- Prompt IE 6 users to install Chrome Frame. Remove this if you support IE 6.
  			chromium.org/developers/how-tos/chrome-frame-getting-started -->
 	<xsl:comment>
@@ -128,10 +135,7 @@
 
 
 	<header role="banner">
-		<h1><a href="{$root}">The Expedition of Humphry Clinker</a></h1>
-		<xsl:if test="$current-page = 'home'">
-			<h2>by Tobias Smollett (version 1.9beta)</h2>
-		</xsl:if>
+		<h1><a href="{$root}"><xsl:value-of select="$website-name"/></a></h1>
 		
 	</header>
 	<div id="utilities" role="controlset">
@@ -158,7 +162,7 @@
 				<button id="quiet" title="Quiet Mode (q)">
 					<xsl:attribute name="class">
 						<xsl:text>entypo-book-open</xsl:text>
-						<xsl:if test="$eohc-reading-mode = 'quiet'">
+						<xsl:if test="//*[substring(name(), string-length(name()) - 8) = '-bookmark'] = 'quiet'">
 							<xsl:text> active</xsl:text>
 						</xsl:if>
 					</xsl:attribute>
@@ -169,7 +173,7 @@
 				<button id="explore" title="Explore Mode (e)">
 					<xsl:attribute name="class">
 						<xsl:text>entypo-map</xsl:text>
-						<xsl:if test="$eohc-reading-mode = 'explore'">
+						<xsl:if test="//*[substring(name(), string-length(name()) - 8) = '-bookmark'] = 'explore'">
 							<xsl:text> active</xsl:text>
 						</xsl:if>
 					</xsl:attribute>
@@ -178,9 +182,215 @@
 			</li>				
 		</ul>
 	</div>
+	<nav>
+		<div id="local">
+			<ul>
+				<xsl:if test="//params/ds-current-chapter/item">
+					<li class="set-bookmark">
+						<button id="set-bookmark" class="entypo-tag" type="button">
+							<xsl:if test="//*[substring(name(), string-length(name()) - 8) = '-bookmark'] = //params/ds-current-chapter/item">
+								<xsl:attribute name="disabled">
+									<xsl:text>true</xsl:text>
+								</xsl:attribute>
+							</xsl:if>
+							<xsl:attribute name="title">
+								<xsl:choose>
+									<xsl:when test="//*[substring(name(), string-length(name()) - 8) = '-bookmark'] = //params/ds-current-chapter/item">
+										<xsl:text>Already Set!</xsl:text>
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:text>Bookmark this chapter (s)</xsl:text>
+									</xsl:otherwise>
+								</xsl:choose>
+							</xsl:attribute>
+							<span>Bookmark this chapter (s)</span>
+						</button>
+					</li>
+				</xsl:if>
+				<xsl:if test="//*[substring(name(), string-length(name()) - 8) = '-bookmark'] &gt; 0">
+					<li class="goto-bookmark">
+						<xsl:choose>
+							<xsl:when test="//*[substring(name(), string-length(name()) - 8) = '-bookmark'] = //params/ds-current-chapter/item">
+								<mark>
+									<a class="entypo-bookmark">
+										<xsl:attribute name="href">
+											<xsl:value-of select="$root"/>
+											<xsl:text>/chapter/</xsl:text>
+											<xsl:value-of select="//*[substring(name(), string-length(name()) - 8) = '-bookmark']"/>
+										</xsl:attribute>
+										<xsl:attribute name="title">
+											<xsl:text>You’re here!</xsl:text>
+										</xsl:attribute>
+										<span>You’re here!</span>
+									</a>
+								</mark>
+							</xsl:when>
+							<xsl:otherwise>
+								<a class="entypo-bookmark">
+									<xsl:attribute name="href">
+										<xsl:value-of select="$root"/>
+										<xsl:text>/chapter/</xsl:text>
+										<xsl:value-of select="//*[substring(name(), string-length(name()) - 8) = '-bookmark']"/>
+									</xsl:attribute>
+									<xsl:attribute name="title">
+										<xsl:text>Go to chapter </xsl:text>
+										<xsl:value-of select="//params/bookmark"/>
+										<xsl:text> (g)</xsl:text>
+									</xsl:attribute>
+									<span>Go to chapter <xsl:value-of select="//*[substring(name(), string-length(name()) - 8) = '-bookmark']"/> (g)</span>
+								</a>
+							</xsl:otherwise>
+						</xsl:choose>
+					</li>
+				</xsl:if>
+				<xsl:if test="//params/ds-current-chapter/item">
+					<li class="show-permalilnks">
+						<button id="show-permalinks" class="entypo-link" type="button" title="Toggle Permalinks (p)">
+							<span>Toggle permanent links to paragraphs (p)</span>
+						</button>
+					</li>
+				</xsl:if>
+				<xsl:if test="//params/ds-current-chapter/item">
+					<li class="back">
+						<a>
+							<xsl:attribute name="href">
+								<xsl:text>../</xsl:text>
+								<xsl:if test="$ds-current-chapter &gt; 1">
+									<xsl:value-of select="$ds-current-chapter - 1"/>
+								</xsl:if>
+							</xsl:attribute>
+							<xsl:attribute name="class">
+								<xsl:text>entypo-</xsl:text>
+								<xsl:choose>
+									<xsl:when test="$ds-current-chapter &gt; 1">
+										<xsl:text>left</xsl:text>
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:text>up</xsl:text>
+									</xsl:otherwise>
+								</xsl:choose>
+							</xsl:attribute>
+							<xsl:attribute name="title">
+								<xsl:choose>
+									<xsl:when test="$ds-current-chapter &gt; 1">
+										<xsl:text>Back</xsl:text>
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:text>Table of Contents</xsl:text>
+									</xsl:otherwise>
+								</xsl:choose>
+								<xsl:text> (b)</xsl:text>
+							</xsl:attribute>
+							<span>
+								<xsl:choose>
+									<xsl:when test="$ds-current-chapter &gt; 1">
+										<xsl:text>Back</xsl:text>
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:text>Table of Contents</xsl:text>
+									</xsl:otherwise>
+								</xsl:choose>
+								<xsl:text> (b key)</xsl:text>
+							</span>
+						</a>
+					</li>
+		
+					<li class="next">
+						<a>
+							<xsl:attribute name="href">
+								<xsl:text>../</xsl:text>
+								<xsl:if test="$ds-current-chapter &lt; 84">
+									<xsl:value-of select="$ds-current-chapter + 1"/>
+								</xsl:if>
+							</xsl:attribute>
+							<xsl:attribute name="class">
+								<xsl:text>entypo-</xsl:text>
+								<xsl:choose>
+									<xsl:when test="$ds-current-chapter &lt; 84">
+										<xsl:text>right</xsl:text>
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:text>up</xsl:text>
+									</xsl:otherwise>
+								</xsl:choose>
+							</xsl:attribute>
+							<xsl:attribute name="title">
+								<xsl:choose>
+									<xsl:when test="$ds-current-chapter &lt; 84">
+										<xsl:text>Next</xsl:text>
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:text>Table of Contents</xsl:text>
+									</xsl:otherwise>
+								</xsl:choose>
+								<xsl:text> (n)</xsl:text>
+							</xsl:attribute>
+							<span>
+								<xsl:choose>
+									<xsl:when test="$ds-current-chapter &lt; 84">
+										<xsl:text>Next</xsl:text>
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:text>Table of Contents</xsl:text>
+									</xsl:otherwise>
+								</xsl:choose>
+								<xsl:text> (n key)</xsl:text>
+							</span>
+						</a>
+					</li>
+				</xsl:if>
+			</ul>
+		</div>
+		<div id="global">
+			<ul>
+				<li>
+					<xsl:choose>
+						<xsl:when test="$root-page = 'chapter'">
+							<mark><a href="{$root}/chapter" class="entypo-book" title="Table of Contents (t)"><span>Table of Contents (t)</span></a></mark>
+						</xsl:when>
+						<xsl:otherwise>
+							<a href="{$root}/chapter" class="entypo-book" title="Table of Contents (t)"><span>Table of Contents (t)</span></a>
+						</xsl:otherwise>				
+					</xsl:choose>
+				</li>
+<!--
+				<li>
+					<xsl:choose>
+						<xsl:when test="$current-page = 'character'">
+							<mark><a href="{$root}/character" class="entypo-users" title="Characters"><span>Characters</span></a></mark>
+						</xsl:when>
+						<xsl:otherwise>
+							<a href="{$root}/character" class="entypo-users" title="Characters"><span>Characters</span></a>
+						</xsl:otherwise>				
+					</xsl:choose>
+				</li>
+				<li>
+					<xsl:choose>
+						<xsl:when test="$current-page = 'location'">
+							<mark><a href="{$root}/location" class="entypo-location" title="Locations"><span>Locations</span></a></mark>
+						</xsl:when>
+						<xsl:otherwise>
+							<a href="{$root}/location" class="entypo-location" title="Locations"><span>Locations</span></a>
+						</xsl:otherwise>				
+					</xsl:choose>
+				</li>
+-->
+				<li>
+					<xsl:choose>
+						<xsl:when test="$current-page = 'search'">
+							<mark><a href="{$root}/search" class="entypo-search" title="Search (f)"><span>Search (f)</span></a></mark>
+						</xsl:when>
+						<xsl:otherwise>
+							<a href="{$root}/search" class="entypo-search" title="Search (f)"><span>Search (f)</span></a>
+						</xsl:otherwise>				
+					</xsl:choose>
+				</li>
+			</ul>
+		</div>
+	</nav>
 	
 	<!-- Individual pages include role="main" and role="complimentary" -->
-	<div>
+	<div id="content">
 		<xsl:apply-templates />
 	</div>
 
@@ -260,7 +470,7 @@
 					<dd>This help sheet</dd>
 					<dt>d</dt>
 					<dt class="entypo-light-up"><span>Sun icon</span></dt>
-					<dd>Toggle Day/Night mode</dd>
+					<dd>Toggle Day/Night/Auto mode<a href="#setting-note-1">*</a></dd>
 					<dt>q</dt>
 					<dt class="entypo-book-open"><span>Open Book icon</span></dt>
 					<dd>Quiet mode</dd>
@@ -274,6 +484,7 @@
 					<dd>Show/Hide permalinks</dd>
 				</dl>
 			</div>
+			<p id="setting-note-1">* Auto mode guesses your location and automatically sets the lighting for you.</p>
 		</div>
 		
 		<div id="docs">
@@ -293,6 +504,8 @@
 
 	<!-- Asynchronous Google Analytics snippet. Change UA-XXXXX-X to be your site's ID.
  			mathiasbynens.be/notes/async-analytics-snippet -->
+ 			
+ 	<xsl:call-template name="page-js"/>
 <xsl:if test="not($cookie-username)">
 	<script>
 		var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];

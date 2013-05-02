@@ -24,14 +24,17 @@ body, select, input, textarea {
 
 body > * {
 	margin: 0 auto;
-	width: 20em;	
-	
-	@include set-column(12, $small-column, $small-gutter, $small-width);
-	@include set-column(12, $large-column, $large-gutter, $large-width);
 }
 
 
 body {
+	& > header, & > div#content, & > footer {
+		width: 20em;
+
+		@include set-column(12, $small-column, $small-gutter, $small-width);
+		@include set-column(12, $large-column, $large-gutter, $large-width);
+	}
+
 /********************
 	Mobile & Basic
  ********************/
@@ -42,8 +45,6 @@ body {
 			margin: 125px auto;
 			margin: 7.5rem auto;
 		}
-		@include set-column(6);
-		@include set-column(6, $large-column, $large-gutter, $large-width);
 		article {
 			h1 {
 				@include set-size(font-size, $base-plus-two);
@@ -56,8 +57,6 @@ body {
 	}
 	& > footer {
 		clear: both;
-		@include set-column(6);
-		@include set-column(6, $large-column, $large-gutter, $large-width);
 		margin: 0 auto;
 		padding: 108px 0;
 		padding: 6rem 0;
@@ -67,10 +66,13 @@ body {
 		p, ul, li {
 			margin: 0;
 			padding: 0;
+			
+			@include set-size(font-size, $base);
 		}
 		& > div { @include set-size(margin-top, 1.25rem); }
 		#docs {
-			@include set-column(2);
+			@include set-column(4);
+			@include set-column(4, $large-column, $large-gutter, $large-width);
 			float: left;
 			text-align: right;
 			ul { list-style: none; }
@@ -80,57 +82,12 @@ body {
 			}
 		}
 		#credits {
-			@include set-column(2);
+			@include set-column(4);
+			@include set-column(4, $large-column, $large-gutter, $large-width);
 			float: right;
 		}
 		#info { display: none; }
 	}
-
-		#info, #info.night {
-			@include set-column(4);
-			@include set-column(4, $large-column, $large-gutter, $large-width);
-			color: $black;
-			h2 {
-				color: $dark-blue;
-				margin: 0; padding: 0;
-				text-align: center;
-			}
-			h3 { text-align: center; }
-			#settings-navigation { float: left; @include set-column(2); }
-			#settings-utilities { float: right; @include set-column(2); }
-			dl {
-			
-				@include set-column(2);
-				dt {
-					float: left;
-					clear: both;
-					@include set-size(width, 1.5rem);
-					text-align: center;
-					@include margin-padding(padding, .3rem, .25rem);
-					@include set-size(margin-bottom, .5rem);
-					background: $black;
-					color: $white;
-				}
-				dt + dt {
-					clear: none;
-					@include set-size(margin-left, .25rem);
-					@include margin-padding(padding, .25rem);
-				}
-				dt span {
-			    	display: block;
-			    	text-indent: 100%;
-			    	white-space: nowrap;
-			    	overflow: hidden;
-			    	width: 0;
-					height: 0;
-				}
-				dd {
-					float: right;
-					@include margin-padding(padding, .25rem);
-					@include set-size(margin-bottom, .5rem);
-				}
-			}
-		}
 
 /*********************
 	Nav & Utilities
@@ -142,7 +99,7 @@ body {
 		background: $black;
 	    color: $white;
 	    @include border-radius(8px, 8px);
-	
+
 		ul {
 			list-style: none;
 			margin: 0;
@@ -158,16 +115,11 @@ body {
 			    	padding: 0 .625rem;
 			    	color: $white;
 			    	text-decoration: none;
-			    	
+			    
 			    	&:visited { color: $white; }
 			    	&:hover { color: $light-gray; }
 			    	span {
-			    		display: block;
-			    		text-indent: 100%;
-			    		white-space: nowrap;
-			    		overflow: hidden;
-			    		width: 0;
-			    		height: 0;
+			    		@include hidetext;
 			    	}
 				}
 				button {
@@ -180,13 +132,7 @@ body {
 	    		@include transition(color .6s ease-out, opacity 1.8s ease-in-out .9s);
 	    		}
 				span {
-					display: block;
-					position: absolute;
-					text-indent: 100%;
-					white-space: nowrap;
-					overflow: hidden;
-					width: 0;
-					height: 0;
+					@include hidetext;
 				 }
 			}
 		}
@@ -194,7 +140,7 @@ body {
 	div#utilities {
 		@include set-size(top, 2.75rem);
 		@include set-size(left, .75rem);
-		
+
 		li {
 	    	&.info, &.quiet-mode, &.explore-mode {
 	    		display: none;
@@ -214,7 +160,7 @@ body {
 		    		margin-right: 0;
 		    	}
 		    }
-		    &.entypo-light-down { 
+		    &.entypo-light-down {
 		    	margin: 2px 0 0 0;
 		    	@media screen and (min-width: 48em) {
 		    		margin: 1px 2px 0 -4px;
@@ -257,12 +203,12 @@ body {
  ********************/
 //	Quiet Mode
 	&.quiet {
-	
+		button#quiet { color: $light-blue; }
 	}
 
 // 	Explore Mode
 	&.explore {
-	
+		button#explore { color: $light-blue; }
 	}
 
 //	Permalinks
@@ -276,7 +222,7 @@ body {
 			opacity: 1;
 			display: block;
 			position: absolute;
-			@include set-size(font-size,.75rem);
+			@include set-size(font-size, $base-minus-one);
 			@include set-size(margin-left,-4.5rem);
 			@media screen and (min-width: 48em) {
 				@include set-size(margin-left,-5rem);
@@ -284,7 +230,7 @@ body {
 		}
 		button#show-permalinks { color: $light-blue; }
 	}
-	
+
 //	Silent mode
 	header[role=banner], div#local, div#global, div#utilities {
 		opacity: .75;
@@ -299,6 +245,257 @@ body {
 		div#global:focus, div#global:hover,
 		div#utilities:focus, div#utilities:hover {
 			opacity: .75;
+		}
+	}
+
+// Info notecard
+
+	#info, #info.night {
+	    @include set-column(12);
+	    @include set-column(10, $large-column, $large-gutter, $large-width);
+	    color: $black;
+	    h2,  {
+	    	color: $dark-blue;
+	    	margin: 0; padding: 0;
+	    	text-align: center;
+	    }
+	    h3 { color: $dark-blue; text-align: center; }
+	    #settings-navigation {
+	    	float: left;
+	    	@include set-column(6);
+	    	@include set-column(5, $large-column, $large-gutter, $large-width);
+	    }
+	    #settings-utilities {
+	    	float: right;
+	    	@include set-column(6);
+	    	@include set-column(5, $large-column, $large-gutter, $large-width);
+	    }
+	    dl {
+
+	    	@include set-column(6);
+	    	@include set-column(5, $large-column, $large-gutter, $large-width);
+	    	dt {
+	    		float: left;
+	    		clear: both;
+	    		@include set-size(width, 1.5rem);
+	    		@include set-size(height, 1.668rem);
+	    		text-align: center;
+	    		@include margin-padding(padding, .3rem, .25rem);
+	    		@include set-size(margin-bottom, .5rem);
+	    		background: $black;
+	    		color: $white;
+	    	}
+	    	dt + dt {
+	    		clear: none;
+	    		@include set-size(margin-left, .25rem);
+	    		@include margin-padding(padding, .25rem);
+	    	}
+	    	dt span {
+	        	@include hidetext;
+	    	}
+	    	dd {
+	    		float: right;
+	    		@include margin-padding(padding, .25rem);
+	    		@include set-size(margin-bottom, .5rem);
+	    	}
+	    }
+
+	    p { margin: 0; @include set-size(padding-top, 1rem); clear: both; }
+	}
+
+/********************
+	Page specific
+ ********************/
+// Home/Intro
+	&#home_page {
+		header[role=banner] {
+			margin: 48px 10% 24px;
+			margin: 3rem 10% 1.5rem;
+			@media screen and (min-width: 48em) {
+				margin: 81px auto 0;
+				margin: 4.5rem auto 0;
+			}
+				@include set-column(12);
+				@include set-column(12, $large-column, $large-gutter, $large-width);
+
+			h1 {
+				@include set-size (font-size, $base-plus-one);
+				@media screen and (min-width: 48em) {
+					@include set-size(font-size, $base-plus-four);
+				}
+				@media screen and (min-width: 60em) {
+					@include set-size(font-size, $base-plus-five);
+				}
+				a { text-decoration: none; }
+			}
+			h2 {
+				@include set-size(font-size, $base);
+				@media screen and (min-width: 48em) {
+					@include set-size(font-size, $base-plus-three);
+				}
+			}
+		}
+		div#content {
+			@include set-size(margin-top, 1.5rem);
+			@media screen and (min-width: 48em) {
+				@include set-size(margin-top, 4.5rem);
+			}
+			section[role=main] {
+				@include set-column(12);
+				@include set-column(12, $large-column, $large-gutter, $large-width);
+			}
+		}
+		div#intro {
+			@include set-column(6);
+			@include set-column(6, $large-column, $large-gutter, $large-width);
+			float: left;
+		}
+		div#table-of-contents {
+			@include set-column(6);
+			@include set-column(6, $large-column, $large-gutter, $large-width);
+			float: right;
+		}
+		div#utilities {
+			@media screen and (min-width: 48em) {
+				@include set-size(top, .5rem);
+			}
+		}
+	}
+
+// Documentation pages
+	&#api_page, &#license_page, &#search_page {
+		header[role=banner] {
+			margin: 81px auto 0;
+			margin: 5.0625rem auto 0;
+			@include set-column(6);
+			@include set-column(6, $large-column, $large-gutter, $large-width);
+			h1 {
+				@include set-size(font-size, $base-plus-five);
+				a { text-decoration: none; }
+			}
+		}
+		div#utilities {
+			@include set-size(top, .5rem);
+		}
+		div#content {
+			@include set-size(margin-top, 4.5rem);
+			section[role=main] {
+				@include set-column(6);
+				@include set-column(6, $large-column, $large-gutter, $large-width);
+				margin: 0 auto;
+			}
+		}
+	}
+
+// Search
+	&#search_page {
+		#results {
+			@include set-size(margin-top, 3rem);
+
+			li {
+				clear: both;
+				@include set-size(padding-bottom, 3rem);
+
+				h2 { @include set-size(font-size, $base-plus-one); }
+				div {
+					@include set-column(3);
+					@include set-column(3, $large-column, $large-gutter, $large-width);
+				}
+			}
+		}
+
+		.search-from { float: left; }
+		.search-date { float: right; }
+	}
+
+// Book Header
+	&#chapter_page, &#book_chapter_page {
+		header[role=banner] {
+			z-index: 10;
+			@media screen and (min-width: 48em) {
+			    position: fixed;
+			    @include set-size(top, .5rem);
+			    @include set-size(left, .75rem);
+	
+			    background: $black;
+			    color: $white;
+	
+			    @include border-radius(8px, 8px);
+	
+			    h1 {
+			    	@include set-size(font-size, $base-plus-one);
+			    	@include margin-padding(padding, .125rem, .5rem);
+			    	margin: 0;
+			    	color: $white;
+			    	a { color: $white; text-decoration: none;
+			    		&:hover, &:focus { color: $light-blue; }
+			    	}
+			    }
+			}
+		}
+	}
+
+// Table of Contents
+	&#chapter_page {
+		div#content {
+			@include set-size(margin-top, 7.5rem);
+			section[role=main] {
+				margin: 0 auto;
+			}
+			h1 { text-align: center; }
+		}
+		section[role=main] {
+    		@include set-column(6);
+    		@include set-column(6, $large-column, $large-gutter, $large-width);
+    		h2 { display: none; }
+		}
+	}
+
+// Book Chapter
+	&#book_chapter_page {
+		section[role=main] {
+    		@include set-column(8);
+			@include set-column(8, $large-column, $large-gutter, $large-width);
+			float: left;
+			@include transition(margin-left .75s ease);
+		}
+		section[role=complimentary] {
+        	width: 0;
+	    	opacity: 0;
+	    	overflow: hidden;
+		}
+		&.quiet {
+			section[role=main] {
+				@media screen and (min-width: 48em) {
+					@include set-size(margin-left, 8.26rem);
+				}
+				@media screen and (min-width: 60em) {
+					@include set-size(margin-left, 10.5rem);
+				}
+			}
+		}
+		&.explore {
+			div#content {
+				section[role=main] {
+					margin-left: 0;
+				}
+				section[role=complimentary] {
+					@media screen and (min-width: 48em) {
+						@include set-column(4);
+						@include set-column(4, $large-column, $large-gutter, $large-width);
+						float: right;
+						display: block;
+						opacity: 1;
+
+						div { @include set-size(margin-top, 1.75rem); }
+						div#chapters-timeline {
+							svg { 
+								@include set-size(height, 110rem);
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 }

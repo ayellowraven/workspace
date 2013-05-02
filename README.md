@@ -5,7 +5,8 @@ Version: 2013.04.30a (http://enguindesign.com/journal/articles/2011/07/versionin
 HTML5 Boilerplate Version: 3.0.6
 
 ## Overview
-This is the basic workspace used in A Yellow Raven books.
+This is the basic workspace used in Platen Project books. 
+(Installation info: github.com/ayellowraven/projectplaten)
 
 ## Requirements
 - Compass <http://compass-style.org/>

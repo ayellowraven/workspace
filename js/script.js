@@ -6,6 +6,13 @@
 	edit your own based on how the how the images work
 	in your layout.
 
+
+	Necessary changes:
+	You should find-and-replace all instances of '[book]'
+	with the value of Project Platen Cookies on:
+
+	`/symphony/system/preferences/`
+
 */
 
 /*  Sets UA properies as cookies for server-side optimizations

@@ -4,6 +4,19 @@
 	used and useful snippits of code.
 -->
 
+
+<!-- Bookmark cookie -->
+<xsl:value-of select="name(//*[substring(name(), string-length(name()) - 8) = '-bookmark'])"/>
+
+<!-- Value of bookmark cookie -->
+<xsl:value-of select="//*[substring(name(), string-length(name()) - 8) = '-bookmark']"/>
+
+<!-- Grab reading mode cookie -->
+<xsl:value-of select="name(//*[substring(name(), string-length(name()) - 12) = '-reading-mode'])"/>
+
+<!-- Value of reading mode cookie -->
+<xsl:value-of select="//*[substring(name(), string-length(name()) - 12) = '-reading-mode']"/>
+
 <!-- Server side optimization for responsive images -->
 <img>
     <xsl:attribute name="title">

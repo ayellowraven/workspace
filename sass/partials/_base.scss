@@ -53,8 +53,8 @@ $small-width: 50rem;
 $small-column: 1.25rem;
 $small-gutter: 3rem;
 
-$large-width: 65rem;
-$large-column: 1rem;
+$large-width: 60rem;
+$large-column: 2.25rem;
 $large-gutter: $small-gutter;
 
 @mixin set-column($columns: 3, $column-size: $small-column, $gutter-size: $small-gutter, $full-width: $small-width) {
@@ -152,5 +152,14 @@ $height-transition: height .75s ease;
 	clear: both;
 	visibility: hidden;
 	line-height: 0;
+	height: 0;
+}
+
+@mixin hidetext {
+    display: block;
+    text-indent: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 0;
 	height: 0;
 }
