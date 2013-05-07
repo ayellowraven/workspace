@@ -413,6 +413,7 @@ body {
 		header[role=banner] {
 			z-index: 10;
 			@media screen and (min-width: 48em) {
+				width: auto;
 			    position: fixed;
 			    @include set-size(top, .5rem);
 			    @include set-size(left, .75rem);
